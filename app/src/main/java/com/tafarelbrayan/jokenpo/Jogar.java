@@ -2,7 +2,7 @@ package com.tafarelbrayan.jokenpo;
 
 public class Jogar extends Thread {
 
-    public  void run(){
+    public void run(){
 
         try {
             Thread.sleep(3000);

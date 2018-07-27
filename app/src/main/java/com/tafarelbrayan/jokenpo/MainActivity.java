@@ -62,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
             Jogar jogarr = new Jogar();
             Thread threadJogar = new Thread(jogarr);
             threadJogar.start();
-            if(!threadJogar.isAlive()){
+            if(threadJogar.isAlive()){
+                System.out.println("N Thread Terminou!");
+            }else{
                 System.out.println("Thread Terminou!");
             }
             //teste(opcao, resultado, animationDrawable, imageView, textView);
