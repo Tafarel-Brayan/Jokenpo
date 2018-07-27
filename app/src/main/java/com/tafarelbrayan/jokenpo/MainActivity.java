@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import static com.tafarelbrayan.jokenpo.R.color.colorDanger;
+import static com.tafarelbrayan.jokenpo.R.color.colorSuccess;
+import static com.tafarelbrayan.jokenpo.R.color.colorWarning;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ResourceAsColor")
     public void jogar(String opcao){
 
-        try {
+
             String[] opcoes = {"pedra", "papel", "tesoura"};
 
             int n = new Random().nextInt(3);
@@ -55,68 +59,82 @@ public class MainActivity extends AppCompatActivity {
             AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getBackground();
             animationDrawable.start();
 
-            Thread.sleep(1000);
+            Jogar jogarr = new Jogar();
+            Thread threadJogar = new Thread(jogarr);
+            threadJogar.start();
+            if(!threadJogar.isAlive()){
+                System.out.println("Thread Terminou!");
+            }
+            //teste(opcao, resultado, animationDrawable, imageView, textView);
+
+
+    }
+
+    public void teste(String opcao, String resultado, AnimationDrawable animationDrawable, ImageView imageView, TextView textView){
+        try {
+            Thread.sleep(3000);
 
             switch (resultado){
                 case "pedra":
-                    animationDrawable.stop();
+
                     imageView.setImageResource(R.drawable.pedra);
 
                     if(opcao != "pedra"){
                         if(opcao == "papel"){
                             textView.setText("VOCÊ GANHOU!");
-                            textView.setTextColor(getResources().getColor(R.color.colorSuccess));
+                            textView.setTextColor(getResources().getColor(colorSuccess));
                         }else{
                             textView.setText("VOCÊ PERDEU!");
-                            textView.setTextColor(getResources().getColor(R.color.colorDanger));
+                            textView.setTextColor(getResources().getColor(colorDanger));
                         }
                     }else{
                         textView.setText("EMPATE");
-                        textView.setTextColor(getResources().getColor(R.color.colorWarning));
+                        textView.setTextColor(getResources().getColor(colorWarning));
                     }
 
                     break;
 
                 case "papel":
-                    animationDrawable.stop();
+
                     imageView.setImageResource(R.drawable.papel);
 
                     if(opcao != "papel"){
                         if(opcao == "tesoura"){
                             textView.setText("VOCÊ GANHOU!");
-                            textView.setTextColor(getResources().getColor(R.color.colorSuccess));
+                            textView.setTextColor(getResources().getColor(colorSuccess));
                         }else{
                             textView.setText("VOCÊ PERDEU!");
-                            textView.setTextColor(getResources().getColor(R.color.colorDanger));
+                            textView.setTextColor(getResources().getColor(colorDanger));
                         }
                     }else{
                         textView.setText("EMPATE");
-                        textView.setTextColor(getResources().getColor(R.color.colorWarning));
+                        textView.setTextColor(getResources().getColor(colorWarning));
                     }
                     break;
 
                 case "tesoura":
-                    animationDrawable.stop();
+
                     imageView.setImageResource(R.drawable.tesoura);
 
                     if(opcao != "tesoura"){
                         if(opcao == "pedra"){
                             textView.setText("VOCÊ GANHOU!");
-                            textView.setTextColor(getResources().getColor(R.color.colorSuccess));
+                            textView.setTextColor(getResources().getColor(colorSuccess));
                         }else{
                             textView.setText("VOCÊ PERDEU!");
-                            textView.setTextColor(getResources().getColor(R.color.colorDanger));
+                            textView.setTextColor(getResources().getColor(colorDanger));
                         }
                     }else{
                         textView.setText("EMPATE");
-                        textView.setTextColor(getResources().getColor(R.color.colorWarning));
+                        textView.setTextColor(getResources().getColor(colorWarning));
                     }
                     break;
             }
+
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 
 }
