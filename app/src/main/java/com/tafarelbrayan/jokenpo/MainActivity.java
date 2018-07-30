@@ -16,6 +16,11 @@ import static com.tafarelbrayan.jokenpo.R.color.colorWarning;
 
 public class MainActivity extends AppCompatActivity {
 
+    String opcao;
+    AnimationDrawable animationDrawable;
+    ImageView imageView;
+    TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,100 +48,101 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ResourceAsColor")
     public void jogar(String opcao){
 
+        String[] opcoes = {"pedra", "papel", "tesoura"};
 
-            String[] opcoes = {"pedra", "papel", "tesoura"};
+        int n = new Random().nextInt(3);
 
-            int n = new Random().nextInt(3);
+        String resultado = opcoes[n];
+        this.imageView = findViewById(R.id.imagePadrao);
+        this.textView = findViewById(R.id.textoResultado);
 
-            String resultado = opcoes[n];
-            ImageView imageView = findViewById(R.id.imagePadrao);
-            TextView textView = findViewById(R.id.textoResultado);
+        imageView.setImageResource(R.drawable.transparente);
 
-            imageView.setImageResource(R.drawable.transparente);
+        /*Gif Animado*/
+        imageView.setBackgroundResource(R.drawable.splash_animation);
+        this.animationDrawable = (AnimationDrawable) imageView.getBackground();
+        animationDrawable.start();
 
-            /*Gif Animado*/
-            imageView.setBackgroundResource(R.drawable.splash_animation);
-            AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getBackground();
-            animationDrawable.start();
-
-            Jogar jogarr = new Jogar();
-            Thread threadJogar = new Thread(jogarr);
-            threadJogar.start();
-            if(threadJogar.isAlive()){
-                System.out.println("N Thread Terminou!");
-            }else{
-                System.out.println("Thread Terminou!");
-            }
-            //teste(opcao, resultado, animationDrawable, imageView, textView);
-
+        teste(resultado);
 
     }
 
-    public void teste(String opcao, String resultado, AnimationDrawable animationDrawable, ImageView imageView, TextView textView){
-        try {
-            Thread.sleep(3000);
+    public void teste(final String resultado){
 
-            switch (resultado){
-                case "pedra":
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-                    imageView.setImageResource(R.drawable.pedra);
+                try {
+                    Thread.sleep(3000);
 
-                    if(opcao != "pedra"){
-                        if(opcao == "papel"){
-                            textView.setText("VOCÊ GANHOU!");
-                            textView.setTextColor(getResources().getColor(colorSuccess));
-                        }else{
-                            textView.setText("VOCÊ PERDEU!");
-                            textView.setTextColor(getResources().getColor(colorDanger));
-                        }
-                    }else{
-                        textView.setText("EMPATE");
-                        textView.setTextColor(getResources().getColor(colorWarning));
+                    switch (resultado){
+                        case "pedra":
+
+                            imageView.setImageResource(R.drawable.pedra);
+
+                            if(opcao != "pedra"){
+                                if(opcao == "papel"){
+                                    textView.setText("VOCÊ GANHOU!");
+                                    textView.setTextColor(getResources().getColor(colorSuccess));
+                                }else{
+                                    textView.setText("VOCÊ PERDEU!");
+                                    textView.setTextColor(getResources().getColor(colorDanger));
+                                }
+                            }else{
+                                textView.setText("EMPATE");
+                                textView.setTextColor(getResources().getColor(colorWarning));
+                            }
+
+                            break;
+
+                        case "papel":
+
+                            imageView.setImageResource(R.drawable.papel);
+
+                            if(opcao != "papel"){
+                                if(opcao == "tesoura"){
+                                    textView.setText("VOCÊ GANHOU!");
+                                    textView.setTextColor(getResources().getColor(colorSuccess));
+                                }else{
+                                    textView.setText("VOCÊ PERDEU!");
+                                    textView.setTextColor(getResources().getColor(colorDanger));
+                                }
+                            }else{
+                                textView.setText("EMPATE");
+                                textView.setTextColor(getResources().getColor(colorWarning));
+                            }
+                            break;
+
+                        case "tesoura":
+
+                            imageView.setImageResource(R.drawable.tesoura);
+
+                            if(opcao != "tesoura"){
+                                if(opcao == "pedra"){
+                                    textView.setText("VOCÊ GANHOU!");
+                                    textView.setTextColor(getResources().getColor(colorSuccess));
+                                }else{
+                                    textView.setText("VOCÊ PERDEU!");
+                                    textView.setTextColor(getResources().getColor(colorDanger));
+                                }
+                            }else{
+                                textView.setText("EMPATE");
+                                textView.setTextColor(getResources().getColor(colorWarning));
+                            }
+                            break;
                     }
 
-                    break;
 
-                case "papel":
-
-                    imageView.setImageResource(R.drawable.papel);
-
-                    if(opcao != "papel"){
-                        if(opcao == "tesoura"){
-                            textView.setText("VOCÊ GANHOU!");
-                            textView.setTextColor(getResources().getColor(colorSuccess));
-                        }else{
-                            textView.setText("VOCÊ PERDEU!");
-                            textView.setTextColor(getResources().getColor(colorDanger));
-                        }
-                    }else{
-                        textView.setText("EMPATE");
-                        textView.setTextColor(getResources().getColor(colorWarning));
-                    }
-                    break;
-
-                case "tesoura":
-
-                    imageView.setImageResource(R.drawable.tesoura);
-
-                    if(opcao != "tesoura"){
-                        if(opcao == "pedra"){
-                            textView.setText("VOCÊ GANHOU!");
-                            textView.setTextColor(getResources().getColor(colorSuccess));
-                        }else{
-                            textView.setText("VOCÊ PERDEU!");
-                            textView.setTextColor(getResources().getColor(colorDanger));
-                        }
-                    }else{
-                        textView.setText("EMPATE");
-                        textView.setTextColor(getResources().getColor(colorWarning));
-                    }
-                    break;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
+        );
+
+        thread.start();
+
     }
 
 }
